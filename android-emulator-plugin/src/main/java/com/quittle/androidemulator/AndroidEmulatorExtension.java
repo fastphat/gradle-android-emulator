@@ -81,7 +81,7 @@ public class AndroidEmulatorExtension {
     }
 
     private final EmulatorExtension emulator = new EmulatorExtension();
-    private File avdRoot = null;
+//    private File avdRoot = null;
     private boolean enableForAndroidTests = true;
     private boolean headless = false;
     private String[] additionalEmulatorArguments = null;
@@ -95,17 +95,17 @@ public class AndroidEmulatorExtension {
         action.execute(this.emulator);
     }
 
-    public void setAvdRoot(final File avdRoot) {
-        this.avdRoot = avdRoot;
-    }
-
-    public void avdRoot(final File avdRoot) {
-        this.avdRoot = avdRoot;
-    }
-
-    public File getAvdRoot() {
-        return this.avdRoot;
-    }
+//    public void setAvdRoot(final File avdRoot) {
+//        this.avdRoot = avdRoot;
+//    }
+//
+//    public void avdRoot(final File avdRoot) {
+//        this.avdRoot = avdRoot;
+//    }
+//
+//    public File getAvdRoot() {
+//        return this.avdRoot;
+//    }
 
     public void setEnableForAndroidTests(final boolean enableForAndroidTests) {
         this.enableForAndroidTests = enableForAndroidTests;

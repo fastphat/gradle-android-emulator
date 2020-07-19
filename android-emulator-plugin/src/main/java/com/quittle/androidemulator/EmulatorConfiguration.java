@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 class EmulatorConfiguration {
     private final File sdkRoot;
-    private final File avdRoot;
+//    private final File avdRoot;
     private final Map<String, String> environmentVariableMap;
     private final boolean enableForAndroidTests;
     private final List<String> additionalEmulatorArguments;
@@ -30,11 +30,11 @@ class EmulatorConfiguration {
     EmulatorConfiguration(final Project project, final BaseExtension androidExtension, final AndroidEmulatorExtension androidEmulatorExtension) {
         this.sdkRoot = androidExtension.getSdkDirectory();
 
-        if (androidEmulatorExtension.getAvdRoot() != null) {
-            this.avdRoot = androidEmulatorExtension.getAvdRoot();
-        } else {
-            this.avdRoot = new File(project.getBuildDir(), "android-avd-root");
-        }
+//        if (androidEmulatorExtension.getAvdRoot() != null) {
+//            this.avdRoot = androidEmulatorExtension.getAvdRoot();
+//        } else {
+//            this.avdRoot = new File(project.getBuildDir(), "android-avd-root");
+//        }
 
         if (this.sdkRoot == null) {
             throw new RuntimeException("Unable to initialize com.quittle.android-emulator " +
@@ -44,7 +44,8 @@ class EmulatorConfiguration {
         this.environmentVariableMap = ImmutableMap.of(
                 "ANDROID_SDK_ROOT", sdkRoot.getAbsolutePath(),
                 "ANDROID_HOME", sdkRoot.getAbsolutePath(),
-                "ANDROID_AVD_HOME", avdRoot.getAbsolutePath());
+                "ANDROID_EMULATOR_HOME", new File(sdkRoot, ".android").getAbsolutePath(),
+                "ANDROID_AVD_HOME", new File(sdkRoot, ".android/avd").getAbsolutePath());
         this.enableForAndroidTests = androidEmulatorExtension.getEnableForAndroidTests();
 
         this.additionalEmulatorArguments = new ArrayList<>();
@@ -128,7 +129,7 @@ class EmulatorConfiguration {
     }
 
     File getAvdRoot() {
-        return avdRoot;
+        return new File(sdkRoot, ".android/avd");
     }
 
     Map<String, String> getEnvironmentVariableMap() {
