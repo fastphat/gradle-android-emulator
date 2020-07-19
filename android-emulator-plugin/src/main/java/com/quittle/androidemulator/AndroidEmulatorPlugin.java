@@ -166,7 +166,10 @@ public class AndroidEmulatorPlugin implements Plugin<Project> {
                     exec.getOutputs().dir(new File(avdRoot, emulatorName + ".avd"));
                     exec.getOutputs().file(new File(avdRoot, emulatorName + ".ini"));
 
-                    exec.dependsOn(INSTALL_ANDROID_EMULATOR_SYSTEM_IMAGE_TASK_NAME, ENSURE_ANDROID_EMULATOR_PERMISSIONS_TASK_NAME);
+                    exec.dependsOn(
+                            INSTALL_ANDROID_EMULATOR_SYSTEM_IMAGE_TASK_NAME,
+                            INSTALL_ANDROID_EMULATOR_TASK_NAME,
+                            ENSURE_ANDROID_EMULATOR_PERMISSIONS_TASK_NAME);
                 });
     }
 
