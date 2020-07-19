@@ -121,7 +121,7 @@ public class AndroidEmulatorPlugin implements Plugin<Project> {
     private static void createInstallEmulatorTask(final Project project, final EmulatorConfiguration emulatorConfiguration) {
         createExecTask(project, emulatorConfiguration, INSTALL_ANDROID_EMULATOR_TASK_NAME, exec -> {
                     exec.setExecutable(emulatorConfiguration.getSdkManager());
-                    exec.setArgs(l("emulator"));
+                    exec.setArgs(l(getSdkRootArgument(emulatorConfiguration), "emulator"));
                     exec.setStandardInput(buildStandardInLines("y"));
                     exec.getOutputs().dir(new File(emulatorConfiguration.getSdkRoot(), "emulator"));
 
@@ -142,7 +142,7 @@ public class AndroidEmulatorPlugin implements Plugin<Project> {
     private static void createInstallEmulatorSystemImageTask(final Project project, final EmulatorConfiguration emulatorConfiguration) {
         createExecTask(project, emulatorConfiguration, INSTALL_ANDROID_EMULATOR_SYSTEM_IMAGE_TASK_NAME, exec -> {
                     exec.setExecutable(emulatorConfiguration.getSdkManager());
-                    exec.setArgs(l(emulatorConfiguration.getSystemImagePackageName()));
+                    exec.setArgs(l(getSdkRootArgument(emulatorConfiguration), emulatorConfiguration.getSystemImagePackageName()));
                     exec.setStandardInput(buildStandardInLines("y"));
                     exec.getOutputs().dir(emulatorConfiguration.sdkFile("system-images", emulatorConfiguration.getAndroidVersion(), emulatorConfiguration.getFlavor(), emulatorConfiguration.getAbi()));
                     exec.getOutputs().file(emulatorConfiguration.sdkFile("system-images", emulatorConfiguration.getAndroidVersion(), emulatorConfiguration.getFlavor(), emulatorConfiguration.getAbi(), "system.img"));
@@ -285,6 +285,13 @@ public class AndroidEmulatorPlugin implements Plugin<Project> {
             task.dependsOn(ENSURE_ANDROID_EMULATOR_PERMISSIONS_TASK_NAME, START_ANDROID_EMULATOR_TASK_NAME);
             task.mustRunAfter(WAIT_FOR_ANDROID_EMULATOR_TASK_NAME);
         });
+    }
+
+    /**
+     * Generates the argument for specifying {@code --sdk_root} for the new {@code sdkmanager} which requires it.
+     */
+    private static String getSdkRootArgument(final EmulatorConfiguration emulatorConfiguration) {
+        return "--sdk_root=" + emulatorConfiguration.getSdkRoot().getAbsolutePath();
     }
 
     private static final UnaryOperator<Process> DESTROY_AND_REPLACE_WITH_NULL = process -> {
